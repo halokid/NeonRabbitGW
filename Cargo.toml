@@ -1,0 +1,31 @@
+[package]
+name = "NeonRabbitGW"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+dapr = "0.12.0"
+log = "0.4"
+env_logger = "0.8"
+lazy_static = "1.4.0"
+tokio = { version = "1.4", features = ["full"] }
+prost = "0.11"
+prost-types = "0.11"
+tonic = "0.8"
+
+[build-dependencies]
+tonic-build = "0.8"
+
+[[example]]
+name = "dapr-client-test"
+path = "examples/service/dapr_client.rs"
+
+[profile.dev]
+incremental = true
+
+[lib]
+doctest = false
+#test = false
+
