@@ -1,0 +1,68 @@
+[package]
+name = "NeonRabbitGW"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+#dapr = "0.12.0"
+log = "0.4"
+env_logger = "0.8"
+lazy_static = "1.4.0"
+reqwest = { version = "0.11", features = ["json"] }
+tokio = { version = "1.4", features = ["full"] }
+prost = "0.11"
+prost-types = "0.11"
+tonic = "0.8"
+consul-rs-plus = { path = "../../github/consul-rs-plus", version = "0.1.7" }
+actix-web = "4"
+#actix-web = "3"
+async-trait = "0.1.72"
+serde = "1.0"
+serde_derive = "1.0"
+serde_json = "1.0"
+qstring = "0.7.2"
+#futures = "0.3"
+
+[build-dependencies]
+tonic-build = "0.8"
+
+[profile.dev]
+incremental = true
+
+[lib]
+doctest = false
+#test = false
+
+[[example]]
+name = "dapr_client"
+path = "examples/service/dapr_client.rs"
+
+[[example]]
+name = "web_request"
+path = "examples/actixweb/request.rs"
+
+[[example]]
+name = "web_request2"
+path = "examples/actixweb/request2.rs"
+
+[[example]]
+name = "c1"
+path = "examples/c1.rs"
+
+[[example]]
+name = "c2"
+path = "examples/c2.rs"
+
+[[example]]
+name = "c3"
+path = "examples/c3.rs"
+
+[[example]]
+name = "c4"
+path = "examples/c4.rs"
+
+
+
+
