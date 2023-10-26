@@ -84,7 +84,7 @@ fn get_keys(app_state_data: Data<AppState>) -> Vec<String> {
 }
 
 async fn update_clients(app_state_data: Data<AppState>) {
-  log::debug!("===>>> Check update clients nodes for test!!! <<<===");
+  log::debug!("===>>> Check update clients nodes!!! <<<===");
   loop {
     sleep(Duration::from_secs(5)).await;
     let services = get_keys(app_state_data.clone());

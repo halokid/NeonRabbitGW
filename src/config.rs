@@ -15,7 +15,8 @@ lazy_static! {
 
     config.insert("gw_addr", "127.0.0.1");
     config.insert("gw_port", "8080");
-    config.insert("log_level", "debug");
+    // config.insert("log_level", "debug");
+    config.insert("log_level", "info");
     config.insert("registry_adaptee", "consul");
     config.insert("consul_host", "127.0.0.1");
     config.insert("consul_port", "8500");
