@@ -70,11 +70,11 @@ impl Gateway {
 
 fn get_keys(app_state_data: Data<AppState>) -> Vec<String> {
   let clients = Arc::clone(&app_state_data.clients);
-  log::debug!("-->>> Check update clients nodes loop start: {:?}", clients);
+  // log::debug!("-->>> Check update clients nodes loop start: {:?}", clients);
   let clients_rw = clients.read().unwrap();
-  log::debug!("Clients Arc clients_rw -->>> {:?}", clients_rw);
+  // log::debug!("Clients Arc clients_rw -->>> {:?}", clients_rw);
   let services = clients_rw.keys();
-  log::debug!("get_keys services -->>> {:?}", services);
+  // log::debug!("get_keys services -->>> {:?}", services);
   let mut keys = Vec::new();
   for k in services {
     keys.push(k.to_string());
@@ -88,7 +88,7 @@ async fn update_clients(app_state_data: Data<AppState>) {
   loop {
     sleep(Duration::from_secs(5)).await;
     let services = get_keys(app_state_data.clone());
-    log::debug!("update_clients services -->>> {:?}", services);
+    // log::debug!("update_clients services -->>> {:?}", services);
     // drop(clients_rw);
     let registry = Registry::new();
     for service in services {
@@ -104,7 +104,7 @@ async fn update_clients(app_state_data: Data<AppState>) {
 }
 
 fn update_client(client_key: String, nodes: Vec<String>, app_state_data: Data<AppState>) {
-  log::debug!("Start update_client app_state_data -->>> {:?}", app_state_data.clients);
+  // log::debug!("Start update_client app_state_data -->>> {:?}", app_state_data.clients);
   let clients = Arc::clone(&app_state_data.clients);
   let mut clients_rw = clients.write().unwrap();
   let client = clients_rw.get(client_key.as_str()).unwrap();

@@ -71,6 +71,10 @@ impl Client {
 
   pub async fn invoke(&mut self, service_name: String, method: String,
                       body: serde_json::Value) -> Result<String, CustomErr> {
+    if CONFIG["model"] == "dapr" {
+       return self._invoke_dapr(service_name, method, body).await;
+    }
+
     // get nodes from client
     let client_nodes = Arc::clone(&self.nodes);   // client.nodes
     let client_nodes_r = client_nodes.read().unwrap();
@@ -118,9 +122,27 @@ impl Client {
     // Ok("Client invoke".to_string())
   }
 
-  fn _invoke(method: &str) -> String {
-    // let req_cli = reqwest::Client
-    "".to_string()
+  // invoke sevice use dapr way
+  async fn _invoke_dapr(&mut self, service_name: String,  method: String, body: serde_json::Value)
+    -> Result<String, CustomErr> {
+    let http_client = reqwest::Client::new();
+    let url = format!("http://{}:{}/{}", CONFIG["gw_addr"],
+                      CONFIG["dapr_service_port"], method);
+    log::debug!("Client _invoke_dapr url -->>> {:?}", url);
+    let res = http_client.post(url)
+      .header("dapr-app-id", service_name)
+      .json(&body)
+      .send().await.unwrap().text().await;
+
+    match res {
+      Ok(res) => {
+        Ok(res)
+      }
+      Err(err) => {
+        log::error!("-->>> Client _invoke_dapr err: {:?}", err);
+        Err(CustomErr("-->>> Client _invoke_dapr err, please check".to_string()))
+      }
+    }
   }
 }
 

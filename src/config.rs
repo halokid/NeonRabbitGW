@@ -13,10 +13,12 @@ lazy_static! {
       run_env = "test"
     }
 
+    config.insert("model", "dapr"); // dapr, single
+    config.insert("dapr_service_port", "4500"); // dapr, single
     config.insert("gw_addr", "127.0.0.1");
     config.insert("gw_port", "8080");
-    // config.insert("log_level", "debug");
-    config.insert("log_level", "info");
+    config.insert("log_level", "debug");
+    // config.insert("log_level", "info");
     config.insert("registry_adaptee", "consul");
     config.insert("consul_host", "127.0.0.1");
     config.insert("consul_port", "8500");
