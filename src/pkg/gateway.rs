@@ -96,7 +96,7 @@ async fn update_clients(app_state_data: Data<AppState>) {
       // let service_nodes = registry.client.get_service("neon_broker").await;
       let service_nodes = registry.client.get_service(service.as_str()).await;
       let nodes = service_nodes.unwrap();
-      log::debug!("{} update_client nodes -->>> {:?}", service, nodes);
+      // log::debug!("{} update_client nodes -->>> {:?}", service, nodes);
       // compare to exist clients nodes, see update or not
       update_client(service, nodes, app_state_data.clone());
     }
@@ -110,7 +110,7 @@ fn update_client(client_key: String, nodes: Vec<String>, app_state_data: Data<Ap
   let client = clients_rw.get(client_key.as_str()).unwrap();
   client.borrow_mut().nodes = Arc::new(RwLock::new(nodes));
   drop(clients_rw);
-  log::debug!("update_client new {} app_state_data -->>> {:?}", client_key, app_state_data.clients);
+  // log::debug!("update_client new {} app_state_data -->>> {:?}", client_key, app_state_data.clients);
 }
 
 #[post("/{service}/{method}")]

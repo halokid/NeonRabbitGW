@@ -1,7 +1,8 @@
 NeonRabbitGW
 -------------------
 
-Gateway of [NeonRabbit](https://github.com/halokid/NeonRabbit) 
+A common micro-service API gateway, support normal http/rpc service, can support dapr framework also. </br>
+Production use in project [NeonRabbit](https://github.com/halokid/NeonRabbit) 
 
 # Feature
 
@@ -18,7 +19,7 @@ Gateway of [NeonRabbit](https://github.com/halokid/NeonRabbit)
 
 
 # Usage
-
+running model is config by `config.rs` model setting
 ```shell
 # single model: connect to regiter centre directly, not depend on dapr
 # can not tracking the Gateway service in Dapr default `zipkin`, add tracking
