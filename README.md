@@ -43,4 +43,14 @@ java -jar zipkin-server-2.24.0-exec.jar
 ```
 
 
+# Call Sample
+
+```shell
+
+# gw -->>> schedule -->>> sp
+http://localhost:8080/neon_schedule/job
+
+```
+
+
 
