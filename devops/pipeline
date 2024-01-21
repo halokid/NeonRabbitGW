@@ -12,12 +12,13 @@ pipeline {
         stage('Build') {
             steps {
                 // implement build steps, example build, pack etc.
-                sh 'cargo build --release' // 以 Node.js 项目为例，可以根据实际情况修改
+                sh 'cargo build --release'
             }
         }
 
         stage('Test') {
             steps {
+                // use a specify test mode for unit test
                 // implememnt testing steps, example unit test, integration test
                 // sh 'npm test' // example for Node.js project
                 sh 'Run project unit test'
