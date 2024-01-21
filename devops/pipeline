@@ -4,45 +4,45 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // 从 Git 仓库中拉取代码
+                // from Git repo pull code
                 git 'https://github.com/halokid/NeonRabbitGW.git'
             }
         }
 
         stage('Build') {
             steps {
-                // 执行构建步骤（例如编译、打包等）
+                // implement build steps, example build, pack etc.
                 sh 'cargo build --release' // 以 Node.js 项目为例，可以根据实际情况修改
             }
         }
 
         stage('Test') {
             steps {
-                // 执行测试步骤（例如单元测试、集成测试等）
-                // sh 'npm test' // 以 Node.js 项目为例，可以根据实际情况修改
-                sh 'Run project unit test' // 以 Node.js 项目为例，可以根据实际情况修改
+                // implememnt testing steps, example unit test, integration test
+                // sh 'npm test' // example for Node.js project
+                sh 'Run project unit test'
             }
         }
 
         stage('Deploy') {
             steps {
-                // 构建 Docker 镜像并将其推送到 Docker Registry
+                // build Docker image and push to Docker Registry
                 script {
                     docker.build('your-image-name:latest').push()
                 }
-                // 在部署环境中运行 Docker 容器
-                sh 'docker run -d -p 8080:80 your-image-name:latest' // 假设应用监听端口为 80
+                // run container
+                sh 'docker run -d -p 8080:80 your-image-name:latest' // assume listen port is 80
             }
         }
     }
 
     post {
         success {
-            // 当 Pipeline 成功执行时执行的操作
+            // opreation to be executed when pipeline success implement
             echo 'CI/CD Pipeline executed successfully!'
         }
         failure {
-            // 当 Pipeline 失败时执行的操作
+            // opreation to be executed when pipeline fail implement
             echo 'CI/CD Pipeline failed!'
         }
     }

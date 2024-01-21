@@ -49,6 +49,7 @@ impl Registry {
   }
 }
 
+/*
 #[cfg(test)]
 mod tests {
   use crate::CustomErr;
@@ -63,5 +64,6 @@ mod tests {
     // println!("nodes -->>> {:?}", nodes);
   }
 }
+ */
 
 

@@ -1,5 +1,6 @@
 FROM centos:7.8.2003
 
-ADD xxx /xxx
+ADD NeonRabbitGW /NeonRabbitGW
 #ADD start.sh /start.sh
-ENTRYPOINT [ "/xxx" ]
+ENTRYPOINT [ "/NeonRabbitGW" ]
+
