@@ -13,7 +13,11 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 ## [1.0.1] - From 2023-10-30
-### Adding
+### Added
 - support more than two service route in Zipkin
-- ip whitelist 
+- some code optimize
+
+## [1.0.2] - From 2023-11-24
+### Adding
+- IP Whitelist for the gateway request 
 
