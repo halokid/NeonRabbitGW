@@ -2,10 +2,41 @@ pipeline {
     agent any
 
     stages {
+        /*
+        stage('Clean Workspace') {
+            steps {
+                script {
+                    // 删除目标路径
+                    sh 'rm -rf NeonRabbitGW'
+                }
+            }
+        }
+        */
+
+        /*
         stage('Checkout') {
             steps {
                 // from Git repo pull code
-                git 'https://github.com/halokid/NeonRabbitGW.git'
+                // git 'https://github.com/halokid/NeonRabbitGW.git'
+                sh 'git clone https://github.com/halokid/NeonRabbitGW.git'
+            }
+        }
+        */
+
+        stage('Checkout') {
+            steps {
+                sh 'pwd; cd /opt/gitcode/NeonRabbitGW; sleep 1'
+                sh 'git pull'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // use a specify test mode for unit test
+                // implememnt testing steps, example unit test, integration test
+                // sh 'npm test' // example for Node.js project
+                //sh 'Run project unit test'
+                sh '/root/.cargo/bin/cargo test'
             }
         }
 
@@ -16,23 +47,14 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                // use a specify test mode for unit test
-                // implememnt testing steps, example unit test, integration test
-                // sh 'npm test' // example for Node.js project
-                sh 'Run project unit test'
-            }
-        }
-
         stage('Deploy') {
             steps {
                 // build Docker image and push to Docker Registry
                 script {
-                    docker.build('your-image-name:latest').push()
+                    docker.build('192.168.0.139:5000/registry:latest').push()
                 }
                 // run container
-                sh 'docker run -d -p 8080:80 your-image-name:latest' // assume listen port is 80
+                // sh 'docker run -d -p 8080:80 your-image-name:latest' // assume listen port is 80
             }
         }
     }

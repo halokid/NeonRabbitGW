@@ -35,9 +35,9 @@ incremental = true
 doctest = false
 #test = false
 
-[[example]]
-name = "dapr_client"
-path = "examples/service/dapr_client.rs"
+#[[example]]
+#name = "dapr_client"
+#path = "examples/service/dapr_client.rs"
 
 [[example]]
 name = "web_request"

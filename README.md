@@ -52,5 +52,13 @@ http://localhost:8080/neon_schedule/job
 
 ```
 
+# Devops
+
+```shell
+
+java -jar jenkins-cli.jar -s http://xxxxxx:8080/ -auth xx:xxxxx  delete-builds xxxxx 0-40
+
+```
+
 
 
