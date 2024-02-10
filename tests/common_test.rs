@@ -12,7 +12,7 @@ mod tests {
     #[test]
     fn test_example1() {
         // 编写测试逻辑
-        assert_eq!(2 + 1, 4);
+        assert_eq!(2 + 3, 5);
     }
 
     // 添加更多测试...
