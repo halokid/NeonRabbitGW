@@ -58,6 +58,13 @@ http://localhost:8080/neon_schedule/job
 
 java -jar jenkins-cli.jar -s http://xxxxxx:8080/ -auth xx:xxxxx  delete-builds xxxxx 0-40
 
+curl -X GET http://xxxxxxxx:5000/v2/_catalog
+
+curl -X GET http://xxxxxxx:5000/v2/neon-rabbit-gw/tags/list
+
+kubectl create namespace neon
+
+
 ```
 
 
