@@ -1,4 +1,5 @@
-mod proxy;
+pub mod proxy;
 pub mod gateway;
-mod url;
+pub mod url;
 pub mod errors;
+pub mod rsp;

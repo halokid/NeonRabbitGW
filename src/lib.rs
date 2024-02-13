@@ -5,8 +5,10 @@ pub mod service;
 pub mod websocket;
 pub mod middleware;
 pub mod pkg;
-mod config;
+pub mod config;
 pub mod registry;
+pub mod controller;
+pub mod vo;
 
 #[derive(Debug)]
 pub struct CustomErr (pub String);

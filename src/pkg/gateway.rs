@@ -1,19 +1,18 @@
 use std::cell::RefCell;
 use std::collections::HashMap;
-use std::ops::Deref;
 use std::sync::{Arc, Mutex, RwLock};
-use actix_web::{get, web, App, HttpServer, Responder, HttpRequest, HttpResponse, post};
-use actix_web::http::header::ContentType;
+use actix_cors::Cors;
+use actix_web::{web, App, HttpServer, http};
 use actix_web::middleware::Logger;
 use actix_web::web::Data;
-use qstring::QString;
 use crate::config::CONFIG;
 use crate::service::client::Client;
 use tokio::time::{sleep, Duration};
-use crate::registry::registry::{RegApaptee, Registry};
-use crate::service;
+use crate::controller;
+use crate::registry::registry::{Registry};
 
 unsafe impl Send for AppState {}
+
 unsafe impl Sync for AppState {}
 
 // unsafe impl Sync for RefCell {}
@@ -43,6 +42,7 @@ impl Gateway {
   pub async fn run(&self) -> std::io::Result<()> {
     log::info!("-->>> Gateway run");
     let app_state = AppState::init();
+    // TODO: all web service runtime can share use the `app_state`
     let app_state_data = web::Data::new(app_state);
     let app_state_data_cl = app_state_data.clone();
 
@@ -55,13 +55,28 @@ impl Gateway {
     // );
 
     let serv = HttpServer::new(move || {
+      // Define allowed origins
+      let allowed_origins = "http://localhost:3000";
+      let cors = Cors::default() // Allow all origins
+        .allowed_methods(vec!["GET", "POST", "OPTIONS"]) // Specify allowed HTTP methods
+        .allowed_origin(allowed_origins)
+        .allowed_headers(vec![ // Add allowed headers
+                        http::header::AUTHORIZATION,
+                        http::header::ACCEPT,
+                        http::header::CONTENT_TYPE,
+                    ])
+        .supports_credentials()
+        .max_age(3600); // Cache preflight responses for 1 hour
+
       // App::new().service(gw_version);
       App::new()
+        .wrap(cors)
         .app_data(app_state_data.clone())
         .wrap(Logger::default())
-        .service(ping)
-        .service(gw_version)
-        .service(unify)
+        .service(controller::gateway::ping)
+        .service(controller::gateway::gw_version)
+        .service(controller::management::mgt_login)
+        .service(controller::gateway::unify)
       // .service(unify_test)
     }).bind((CONFIG["gw_addr"], CONFIG["gw_port"].parse().unwrap()))?.run();
     serv.await
@@ -113,92 +128,7 @@ fn update_client(client_key: String, nodes: Vec<String>, app_state_data: Data<Ap
   // log::debug!("update_client new {} app_state_data -->>> {:?}", client_key, app_state_data.clients);
 }
 
-#[post("/{service}/{method}")]
-async fn unify(req: HttpRequest, req_body: String, data: web::Data<AppState>) -> impl Responder {
-  log::debug!("\n\n================= <<--- unify call start -->>> ==================");
-  // parse url
-  let service: String = req.match_info().query("service").parse().unwrap();
-  let method: String = req.match_info().query("method").parse().unwrap();
-  log::debug!("-->>> service: {}, method: {}", service, method);
-
-  // let mut clients = data.clients.lock().unwrap();
-  let mut clients = data.clients.read().unwrap();
-  log::debug!("All Clients -->>> {:?}", clients);
-
-  // log::debug!("AppState clients -->>> {:?}", data.clients);
-  let qs = QString::from(req.query_string());
-  let test = qs.get("test");
-  match test {
-    None => {}
-    Some(_) => {
-      sleep(Duration::from_secs(5)).await;
-    }
-  }
-
-  let client_wp = clients.get(service.as_str());
-  // let client_wp = clients.get(service.as_str());
-  // let mut body: serde_json::Value = serde_json::from_str(req_body.as_str()).unwrap();
-  let mut body_check = serde_json::from_str(req_body.as_str());
-  // TODO: initial the `serde_json::Value`
-  let mut body: serde_json::Value = serde_json::Value::Null;
-  match body_check {
-    Ok(..) => {
-      // log::debug!("-->>> unify request body is not null");
-      body = body_check.unwrap();
-      log::debug!("unify request body -->>> {:?}", body);
-    }
-    Err(err) => {
-      log::error!("-->>> unify get request body error: {:?}", err);
-    }
-  }
-  let mut rsp = "".to_string();
-
-  match client_wp {
-    Some(clientx) => {
-      log::debug!("-->>> Gateway exist client");
-      let mut client_run = clientx.borrow_mut();
-      let svc_rsp = client_run.invoke(service, method, body).await;
-      // let svc_rsp =  Client::invoke(service, method, body).await;
-      log::debug!("exist Client svc_rsp -->>> {:?}", svc_rsp);
-      rsp = svc_rsp.unwrap();
-    }
-    None => {
-      drop(clients);    // TODO: relaese the `read` lock of the Arc for below `write`
-      log::debug!("-->>> Gateway new client");
-      let mut client = Client::new();
-      let svc_rsp = client.invoke(service.clone(), method, body).await;
-      match svc_rsp {
-        Ok(rspx) => {
-          // clients.insert(service.clone(), client);
-          {
-            let cs = Arc::clone(&data.clients);
-            let mut k = cs.write().unwrap();
-            k.insert(service, RefCell::new(client));
-            drop(k);
-          }
-          /*
-          tokio::task::spawn(async move {
-          // tokio::task::spawn(async move || {
-            let mut k = cs.write().unwrap();
-            // k.insert(service.clone(), client);
-            k.insert(service.clone(), RefCell::new(client) );
-          });
-           */
-          log::debug!("new Client svc_rsp -->>> {:?}", rspx);
-          rsp = rspx;
-        }
-        Err(err) => {
-          rsp = err.0;
-        }
-      }
-    }
-  }
-
-  HttpResponse::Ok()
-    .content_type(ContentType::json())
-    .body(rsp)
-}
-
+/*
 #[get("/ping")]
 async fn ping() -> impl Responder {
   format!("ping!")
@@ -208,5 +138,6 @@ async fn ping() -> impl Responder {
 async fn gw_version() -> impl Responder {
   format!("Gateway V1.0")
 }
+ */
 
 

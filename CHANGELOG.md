@@ -20,4 +20,5 @@ All notable changes to this project will be documented in this file.
 ## [1.0.2] - From 2023-11-24
 ### Adding
 - IP Whitelist for the gateway request 
+- support CORS 
 
