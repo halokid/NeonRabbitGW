@@ -21,4 +21,5 @@ All notable changes to this project will be documented in this file.
 ### Adding
 - IP Whitelist for the gateway request 
 - support CORS 
+- add JWT 
 
