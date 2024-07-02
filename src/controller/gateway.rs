@@ -8,17 +8,17 @@ use tokio::time::{sleep, Duration};
 use crate::service::client::Client;
 
 #[get("/ping")]
-async fn ping() -> impl Responder {
+pub async fn ping() -> impl Responder {
   format!("ping!")
 }
 
 #[get("/version")]
-async fn gw_version() -> impl Responder {
+pub async fn gw_version() -> impl Responder {
   format!("Gateway V1.0")
 }
 
 #[post("/{service}/{method}")]
-async fn unify(req: HttpRequest, req_body: String, data: web::Data<AppState>) -> impl Responder {
+pub async fn unify(req: HttpRequest, req_body: String, data: web::Data<AppState>) -> impl Responder {
   log::debug!("\n\n================= <<--- unify call start -->>> ==================");
   // parse url
   let service: String = req.match_info().query("service").parse().unwrap();
