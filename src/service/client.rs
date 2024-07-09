@@ -126,7 +126,8 @@ impl Client {
   // TODO: why here need use GW to call dapr service? cuz we need drft the route call in Zipkin
   // TODO: if direct call dapr service here, will not record the route link `GW --> neon_schedule`
   // TODO: in zipkin, of course we need cost a little performance for this, but this way can be more
-  // TODO: visibility and trace fro the micro service
+  // TODO: visibility and trace for the micro service
+  // TODO: this is the original way Dapr service A call service B when they are in the same service registry
   async fn _invoke_dapr(&mut self, service_name: String,  method: String, body: serde_json::Value)
     -> Result<String, CustomErr> {
     let http_client = reqwest::Client::new();

@@ -70,4 +70,13 @@ kubectl create namespace neon
 ```
 
 
+# Front
+```shell 
+# cuz Dapr has dashboard,  has some functions can manage service, so can use to instead of this frontend
+cd neongw-frontend
+
+yarn start
+
+```
+
 

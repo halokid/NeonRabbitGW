@@ -73,7 +73,8 @@ fn c2() {
   let data = Arc::new(Mutex::new(0));
   let (tx, rx) = channel();
 
-  for _ in 0..20 {
+  for i in 0..20 {
+    println!("i -->>> {}", i);
     let (data, tx) = (data.clone(), tx.clone());
     thread::spawn(move || {
       let mut num = data.lock().unwrap();
