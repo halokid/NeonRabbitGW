@@ -46,9 +46,9 @@ impl Gateway {
     let app_state_data = web::Data::new(app_state);
     let app_state_data_cl = app_state_data.clone();
 
-    tokio::task::spawn(async move {
-      update_clients(app_state_data_cl).await;
-    });
+    // tokio::task::spawn(async move {
+    //   update_clients(app_state_data_cl).await;
+    // });
 
     // tokio::task::spawn(
     //   futures::future::lazy(move |_| update_clients(app_state_data_cl) )
@@ -98,6 +98,7 @@ fn get_keys(app_state_data: Data<AppState>) -> Vec<String> {
   keys
 }
 
+/*
 async fn update_clients(app_state_data: Data<AppState>) {
   log::debug!("===>>> Check update clients nodes!!! <<<===");
   loop {
@@ -117,6 +118,8 @@ async fn update_clients(app_state_data: Data<AppState>) {
     }
   }
 }
+ */
+
 
 fn update_client(client_key: String, nodes: Vec<String>, app_state_data: Data<AppState>) {
   // log::debug!("Start update_client app_state_data -->>> {:?}", app_state_data.clients);

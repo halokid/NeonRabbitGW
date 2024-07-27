@@ -66,6 +66,9 @@ curl -X GET http://xxxxxxx:5000/v2/neon-rabbit-gw/tags/list
 # K8s
 kubectl create namespace neon
 
+# Running Dapr Sidecar with a Custom Configuration File
+dapr run --app-id myapp --config ./path/to/your/custom-config.yaml
+
 
 ```
 

@@ -71,6 +71,8 @@ impl Client {
 
   pub async fn invoke(&mut self, service_name: String, method: String,
                       body: serde_json::Value) -> Result<String, CustomErr> {
+    return self._invoke_dapr(service_name, method, body).await;
+    /*
     if CONFIG["model"] == "dapr" {
        return self._invoke_dapr(service_name, method, body).await;
     }
@@ -120,6 +122,7 @@ impl Client {
       }
     }
     // Ok("Client invoke".to_string())
+     */
   }
 
   // invoke sevice use dapr way
