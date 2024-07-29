@@ -12,6 +12,11 @@ pub async fn ping() -> impl Responder {
   format!("ping!")
 }
 
+pub async fn not_found() -> impl Responder {
+  // format!("Error 404")
+  HttpResponse::NotFound().body(format!("Error 404"))
+}
+
 #[get("/version")]
 pub async fn gw_version() -> impl Responder {
   format!("Gateway V1.0")

@@ -3,7 +3,7 @@ mod tests {
   // 导入需要测试的模块或文件
   // use super::my_module;
 
-  use NeonRabbitGW::pkg::rsp::FailRsp;
+  use NeonRabbitGW::pkg::rsp::fail_rsp;
 
   #[test]
   fn test_example() {
@@ -20,7 +20,7 @@ mod tests {
   // 添加更多测试...
   #[test]
   fn test_rsp() {
-    let rsp = FailRsp("".to_string());
+    let rsp = fail_rsp("".to_string());
     println!("rsp -->>> {:?}", rsp);
   }
 }

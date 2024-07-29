@@ -10,6 +10,8 @@ use crate::service::client::Client;
 use tokio::time::{sleep, Duration};
 use crate::controller;
 use crate::registry::registry::{Registry};
+use actix_web::{dev::Service as _};
+use crate::middleware::middleware::MiddleWare;
 
 unsafe impl Send for AppState {}
 
@@ -46,14 +48,6 @@ impl Gateway {
     let app_state_data = web::Data::new(app_state);
     let app_state_data_cl = app_state_data.clone();
 
-    // tokio::task::spawn(async move {
-    //   update_clients(app_state_data_cl).await;
-    // });
-
-    // tokio::task::spawn(
-    //   futures::future::lazy(move |_| update_clients(app_state_data_cl) )
-    // );
-
     let serv = HttpServer::new(move || {
       // Define allowed origins
       let allowed_origins = "http://localhost:3000";
@@ -71,12 +65,14 @@ impl Gateway {
       // App::new().service(gw_version);
       App::new()
         .wrap(cors)
+        .wrap(MiddleWare)
         .app_data(app_state_data.clone())
         .wrap(Logger::default())
         .service(controller::gateway::ping)
         .service(controller::gateway::gw_version)
         .service(controller::management::mgt_login)
         .service(controller::gateway::unify)
+        .default_service(web::route().to(controller::gateway::not_found))
       // .service(unify_test)
     }).bind((CONFIG["gw_addr"], CONFIG["gw_port"].parse().unwrap()))?.run();
     serv.await
@@ -98,29 +94,6 @@ fn get_keys(app_state_data: Data<AppState>) -> Vec<String> {
   keys
 }
 
-/*
-async fn update_clients(app_state_data: Data<AppState>) {
-  log::debug!("===>>> Check update clients nodes!!! <<<===");
-  loop {
-    sleep(Duration::from_secs(5)).await;
-    let services = get_keys(app_state_data.clone());
-    // log::debug!("update_clients services -->>> {:?}", services);
-    // drop(clients_rw);
-    let registry = Registry::new();
-    for service in services {
-      // get real time clients nodes
-      // let service_nodes = registry.client.get_service("neon_broker").await;
-      let service_nodes = registry.client.get_service(service.as_str()).await;
-      let nodes = service_nodes.unwrap();
-      // log::debug!("{} update_client nodes -->>> {:?}", service, nodes);
-      // compare to exist clients nodes, see update or not
-      update_client(service, nodes, app_state_data.clone());
-    }
-  }
-}
- */
-
-
 fn update_client(client_key: String, nodes: Vec<String>, app_state_data: Data<AppState>) {
   // log::debug!("Start update_client app_state_data -->>> {:?}", app_state_data.clients);
   let clients = Arc::clone(&app_state_data.clients);
@@ -130,17 +103,4 @@ fn update_client(client_key: String, nodes: Vec<String>, app_state_data: Data<Ap
   drop(clients_rw);
   // log::debug!("update_client new {} app_state_data -->>> {:?}", client_key, app_state_data.clients);
 }
-
-/*
-#[get("/ping")]
-async fn ping() -> impl Responder {
-  format!("ping!")
-}
-
-#[get("/version")]
-async fn gw_version() -> impl Responder {
-  format!("Gateway V1.0")
-}
- */
-
 
