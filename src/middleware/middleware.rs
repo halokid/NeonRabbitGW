@@ -59,22 +59,6 @@ impl<S, B> Service<ServiceRequest> for MiddlewareProcess<S>
       let mut res = fut.await?;
       println!("Hi from response");
 
-      // res.response_mut().headers_mut().insert(
-      //   header::CONTENT_TYPE,
-      //   header::HeaderValue::from_static("Error"),
-      // );
-
-      // rbj.msg = format!("{}. I modified the request.", rbj.msg);
-      // let new_rbj_result = serde_json::to_string(&rbj);
-      // let new_rbj_str = new_rbj_result.unwrap();
-      // let body_final = Bytes::from(new_rbj_str);
-
-      // let str = "Hello, world!";
-      // let bytes = str.as_bytes();
-      // res.response_mut().as_ref().set_body(bytes);
-      // res.response_mut().set_body(bytes);
-      // let resx = res;
-
       Ok(res)
     })
   }
