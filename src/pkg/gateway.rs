@@ -11,6 +11,7 @@ use tokio::time::{sleep, Duration};
 use crate::controller;
 use crate::registry::registry::{Registry};
 use actix_web::{dev::Service as _};
+use crate::middleware::heartbeat::Heartbeat;
 use crate::middleware::middleware::MiddleWare;
 
 unsafe impl Send for AppState {}
@@ -65,7 +66,8 @@ impl Gateway {
       // App::new().service(gw_version);
       App::new()
         .wrap(cors)
-        .wrap(MiddleWare)
+        // .wrap(MiddleWare)
+        .wrap(Heartbeat)
         .app_data(app_state_data.clone())
         .wrap(Logger::default())
         .service(controller::gateway::ping)

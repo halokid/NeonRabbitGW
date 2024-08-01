@@ -56,23 +56,8 @@ impl<S, B> Service<ServiceRequest> for MiddlewareProcess<S>
     let fut = self.service.call(req);
 
     Box::pin(async move {
-      // let &mut res = fut.await?;
       let mut res = fut.await?;
-      // let res = fut.await?;
-
-      //   let e= Error::
-      //   res.response_mut().headers_mut().insert(
-      //     header::CONTENT_TYPE,
-      //     header::HeaderValue::from_static("Error"),
-      // );
-
-      // body is unchanged, map to "left" slot
       println!("Hi from response");
-
-      // let e = actix_web::Error::into("xxx");
-      // let e = HttpError::from("xxxx");
-      // Err(HttpResponse::BadGateway().into())
-      // Err(e)
 
       // res.response_mut().headers_mut().insert(
       //   header::CONTENT_TYPE,
@@ -84,15 +69,13 @@ impl<S, B> Service<ServiceRequest> for MiddlewareProcess<S>
       // let new_rbj_str = new_rbj_result.unwrap();
       // let body_final = Bytes::from(new_rbj_str);
 
-      let str = "Hello, world!";
-let bytes = str.as_bytes();
+      // let str = "Hello, world!";
+      // let bytes = str.as_bytes();
       // res.response_mut().as_ref().set_body(bytes);
-      res.response_mut().set_body(bytes);
+      // res.response_mut().set_body(bytes);
       // let resx = res;
 
       Ok(res)
-      // return Err()
-      // Err(e)
     })
   }
 }
