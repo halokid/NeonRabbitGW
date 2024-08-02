@@ -1,15 +1,15 @@
 use crate::middleware::middleware::MiddleWarePl;
 
-pub struct SampleMw {}
+pub struct SampleMw2 {}
 
-impl SampleMw {
+impl SampleMw2 {
   pub fn new() -> Self {
-    SampleMw{}
+    SampleMw2{}
   }
 }
 
-impl MiddleWarePl for SampleMw {
+impl MiddleWarePl for SampleMw2 {
   fn filter(&self) -> bool {
-    return true
+    return false;
   }
 }

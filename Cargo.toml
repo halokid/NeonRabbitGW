@@ -68,4 +68,7 @@ path = "examples/c3.rs"
 name = "c4"
 path = "examples/c4.rs"
 
+[[example]]
+name = "c5"
+path = "examples/c5.rs"
 

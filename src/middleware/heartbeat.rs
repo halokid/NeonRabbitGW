@@ -1,4 +1,5 @@
 use std::{future::{ready, Ready}};
+use actix_http::Request;
 
 use actix_web::{
 	dev::{self, Service, ServiceRequest, ServiceResponse, Transform},
@@ -47,6 +48,18 @@ impl<S, B> Service<ServiceRequest> for HeartMiddleware<S>
   dev::forward_ready!(service);
 
   fn call(&self, req: ServiceRequest) -> Self::Future {
+    log::debug!("-->>> procrss call by middleware");
+    println!("req1 -->>> {:?}", req);
+    // let new_request0 = req.request();
+    // let new_request = new_request0.clone();
+    // let new_request = (*new_request0).clone();
+    // println!("req2 -->>> {:?}", new_request);
+    // println!("kkkkkkkkkkkkkkkkk");
+    // println!("req3 -->>> {:?}", req);
+
+    // req.path() = "/ping";
+    // req.
+
     let fut = self.service.call(req);
     Box::pin(async move {
       let res = fut.await?;
@@ -58,6 +71,10 @@ impl<S, B> Service<ServiceRequest> for HeartMiddleware<S>
           head.headers_mut().append(
             HeaderName::from_static("content-type"),
             HeaderValue::from_static("text/plain"),
+          );
+          head.headers_mut().append(
+            HeaderName::from_static("error"),
+            HeaderValue::from_static("trigger heart beat"),
           );
           let box_body = BoxBody::new("heart beat middleware rsp");
 					// TODO: `EitherBody::right` means  `EitherBody<B, BoxBody> use <BoxBody>`

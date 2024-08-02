@@ -4,3 +4,4 @@ pub mod httpcros;
 pub mod middleware;
 pub mod sample;
 pub mod heartbeat;
+pub mod sample2;
