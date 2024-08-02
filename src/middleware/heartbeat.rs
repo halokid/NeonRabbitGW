@@ -48,17 +48,7 @@ impl<S, B> Service<ServiceRequest> for HeartMiddleware<S>
   dev::forward_ready!(service);
 
   fn call(&self, req: ServiceRequest) -> Self::Future {
-    log::debug!("-->>> procrss call by middleware");
-    println!("req1 -->>> {:?}", req);
-    // let new_request0 = req.request();
-    // let new_request = new_request0.clone();
-    // let new_request = (*new_request0).clone();
-    // println!("req2 -->>> {:?}", new_request);
-    // println!("kkkkkkkkkkkkkkkkk");
-    // println!("req3 -->>> {:?}", req);
-
-    // req.path() = "/ping";
-    // req.
+    log::debug!("-->>> procrss call by heartbeat middleware");
 
     let fut = self.service.call(req);
     Box::pin(async move {

@@ -66,8 +66,8 @@ impl Gateway {
       // App::new().service(gw_version);
       App::new()
         .wrap(cors)
-        // .wrap(MiddleWare)
-        .wrap(Heartbeat)
+        .wrap(MiddleWare)
+        // .wrap(Heartbeat)
         .app_data(app_state_data.clone())
         .wrap(Logger::default())
         .service(controller::gateway::ping)

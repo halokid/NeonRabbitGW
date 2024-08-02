@@ -54,16 +54,7 @@ impl<S, B> Service<ServiceRequest> for MiddlewareProcess<S>
 
   fn call(&self, req: ServiceRequest) -> Self::Future {
     log::debug!("-->>> procrss call by middleware");
-    println!("req1 -->>> {:?}", req);
-    let new_request0 = req.request();
-
-    let new_request = new_request0.clone();
-    println!("req2 -->>> {:?}", new_request);
-
-    println!("kkkkkkkkkkkkkkkkk");
-    println!("req3 -->>> {:?}", req);
     let fut = self.service.call(req);
-    println!("zzzzzzzzzzzzzzzzzzzzz");
     Box::pin(async move {
       // middle ware check
       let mut mws: Vec<Box<dyn MiddleWarePl>> = Vec::new();
@@ -71,44 +62,16 @@ impl<S, B> Service<ServiceRequest> for MiddlewareProcess<S>
       let sample_mw = SampleMw::new();
       mws.push(Box::new(sample_mw));
 
-      // let sample_mw2 = SampleMw2::new();
-      // mws.push(Box::new(sample_mw2));
+      let sample_mw2 = SampleMw2::new();
+      mws.push(Box::new(sample_mw2));
 
       for mw in mws {
         if !mw.filter() {
-          println!("xxxxxxxxxxxxxxx");
-          //   let res = HttpResponse::Ok()
-          // .content_type("text/plain")
-          // .body("Hello, world!");
-          //   Ok(res.map_body(|head, _body| {
-          //     let box_body = BoxBody::new("heart beat middleware rsp");
-          // 	// TODO: `EitherBody::right` means  `EitherBody<B, BoxBody> use <BoxBody>`
-          //   EitherBody::right(box_body)
-          //   }))
-
-          // let new_request = req.request().clone();
-          // let new_request = res.request().clone();
-        //   let  new_request = test::TestRequest::with_uri("/api?id=4&name=foo")
-        // .insert_header(("host", "example.com")).
-
-          let new_response = HttpResponseBuilder::new(StatusCode::BAD_REQUEST)
-            .insert_header((header::CONTENT_TYPE, "application/json"))
-            .body("New body data");
-
-          let mut res = ServiceResponse::new(
-            new_request,
-            // Default::default(),
-            new_response,
-          );
-          return Ok(res.map_body(|head, _body| {
-          let box_body = BoxBody::new("heart beat middleware rsp");
-					// TODO: `EitherBody::right` means  `EitherBody<B, BoxBody> use <BoxBody>`
-          EitherBody::right(box_body)
-        }));
+          // TODO: do something fit middleware and return
         }
       }
 
-      println!("yyyyyyyyyyyyyyyyy");
+      // use original request
       let res = fut.await?;
       Ok(res.map_body(|_head, body| EitherBody::left(body)))
     })
