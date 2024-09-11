@@ -5,7 +5,7 @@ use crate::pkg::rsp::success_rsp;
 
 // const api_prefix: &str = "mgt";
 
-#[post("/mgt/login")]
+// #[post("/mgt/login")]
 pub(crate) async fn mgt_login() -> impl Responder {
   let rsp = success_rsp();
   HttpResponse::Ok().content_type(ContentType::json())

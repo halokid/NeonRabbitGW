@@ -72,3 +72,13 @@ path = "examples/c4.rs"
 name = "c5"
 path = "examples/c5.rs"
 
+[[example]]
+name = "decorator1"
+path = "examples/decorator/c1.rs"
+
+[[example]]
+name = "decorator2"
+path = "examples/decorator/c2.rs"
+
+
+

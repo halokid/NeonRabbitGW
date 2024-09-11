@@ -7,7 +7,7 @@ use crate::pkg::gateway::AppState;
 use tokio::time::{sleep, Duration};
 use crate::service::client::Client;
 
-#[get("/ping")]
+// #[get("/ping")]
 pub async fn ping() -> impl Responder {
   format!("ping!")
 }
@@ -17,12 +17,12 @@ pub async fn not_found() -> impl Responder {
   HttpResponse::NotFound().body(format!("Error 404"))
 }
 
-#[get("/version")]
+// #[get("/version")]
 pub async fn gw_version() -> impl Responder {
   format!("Gateway V1.0")
 }
 
-#[post("/{service}/{method}")]
+// #[post("/{service}/{method}")]
 pub async fn unify(req: HttpRequest, req_body: String, data: web::Data<AppState>) -> impl Responder {
   log::debug!("\n\n================= <<--- unify call start -->>> ==================");
   // parse url

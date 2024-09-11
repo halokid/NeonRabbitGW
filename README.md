@@ -29,6 +29,10 @@ cargo run
 # dapr model:
 dapr.exe run --app-id neon_gw  --app-protocol http  --app-port 8080  --dapr-http-port 4500   -- cargo.exe run
 
+
+# run in k8s
+/opt/dapr run  --app-id neon_gw  --app-protocol http  --app-port 8080  --dapr-http-port 4500  --  ./NeonRabbitGW
+
 ```
 
 # Compnent
