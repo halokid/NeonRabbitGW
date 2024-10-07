@@ -4,7 +4,7 @@ use std::sync::{Arc, RwLock, RwLockWriteGuard};
 use actix_web::cookie::time::Month::March;
 use log::log;
 use tonic::codegen::ok;
-use crate::config::CONFIG;
+use crate::config::{CONFIG, RUN_MODEL};
 use crate::CustomErr;
 use crate::pkg::errors::RSP_ERR_NO_NODES;
 use crate::registry::registry::{RegApaptee, Registry};
@@ -71,9 +71,11 @@ impl Client {
 
   pub async fn invoke(&mut self, service_name: String, method: String,
                       body: serde_json::Value) -> Result<String, CustomErr> {
-    return self._invoke_dapr(service_name, method, body).await;
-    /*
-    if CONFIG["model"] == "dapr" {
+    // return self._invoke_dapr(service_name, method, body).await;
+    // /*
+    let run_model: Arc<RwLock<String>> = Arc::clone(&RUN_MODEL);
+    let run_model_r = run_model.read().unwrap();
+    if *run_model_r == "dapr" {
        return self._invoke_dapr(service_name, method, body).await;
     }
 
@@ -122,7 +124,7 @@ impl Client {
       }
     }
     // Ok("Client invoke".to_string())
-     */
+    //  */
   }
 
   // invoke sevice use dapr way

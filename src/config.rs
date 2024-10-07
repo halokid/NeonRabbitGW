@@ -1,6 +1,7 @@
 use lazy_static::*;
-use std::env;
 use std::collections::HashMap;
+use std::env;
+use std::sync::{Arc, RwLock};
 
 lazy_static! {
   pub static ref CONFIG: HashMap<&'static str, &'static str> = {
@@ -13,8 +14,6 @@ lazy_static! {
       run_env = "test"
     }
 
-    // config.insert("model", "dapr"); // dapr, single
-    config.insert("model", "single"); // dapr, single
     config.insert("dapr_service_port", "4500"); // dapr, single
     // config.insert("gw_addr", "127.0.0.1");
     config.insert("gw_addr", "0.0.0.0");
@@ -30,25 +29,13 @@ lazy_static! {
 
     match run_env {
       "dev" => {
-        // config.insert("log_level", "info");
-        // config.insert("registry_adaptee", "consul");
-        // config.insert("consul_host", "127.0.0.1");
-        // config.insert("consul_port", "8500");
       },
       "test" => {
-        // config.insert("log_level", "info");
-        // config.insert("registry_adaptee", "consul");
-        // config.insert("consul_host", "127.0.0.1");
-        // config.insert("consul_port", "8500");
       },
       "prd" => {
         config.insert("log_level", "info");
       },
       _ => {
-        // config.insert("log_level", "info");
-        // config.insert("registry_adaptee", "consul");
-        // config.insert("consul_host", "127.0.0.1");
-        // config.insert("consul_port", "8500");
       },
     }
 
@@ -57,4 +44,7 @@ lazy_static! {
   };
 }
 
-
+lazy_static! {
+  // pub static ref  RUN_MODEL: String =  Arc::new(RwLock::new("single".to_string()));
+  pub static ref  RUN_MODEL: Arc<RwLock<String>> =  Arc::new(RwLock::new(String::from("single")));
+}

@@ -64,7 +64,7 @@ fn c1() {
     handle.join().unwrap();
   }
 
-  println!("Result -->>> {}", *counter.lock().unwrap());
+  println!("Final counter:  -->>> {}", *counter.lock().unwrap());
 }
 
 const N: usize = 10;
