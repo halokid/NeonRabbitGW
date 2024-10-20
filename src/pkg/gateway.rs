@@ -22,14 +22,18 @@ unsafe impl Sync for AppState {}
 
 // #[derive(Debug)]
 pub struct AppState {
-  pub todo_db: Arc<Mutex<Vec<String>>>,
+  // pub todo_db: Arc<Mutex<Vec<String>>>,
+
+  // TODO: why here use `ReCell` for `Client`? cuz we need a mut ref in `gateway.unify` controller
+  // TODO: we have a process need update the service client ref there, this scenaior need `refcell`
+  // TODO: we ca use `borrow_mut()` to a `refcell` variable to update it
   pub clients: Arc<RwLock<HashMap<String, RefCell<Client>>>>,
 }
 
 impl AppState {
   pub fn init() -> AppState {
     AppState {
-      todo_db: Arc::new(Mutex::new(Vec::new())),
+      // todo_db: Arc::new(Mutex::new(Vec::new())),
       clients: Arc::new(RwLock::new(HashMap::new())),
     }
   }
@@ -71,9 +75,11 @@ impl Gateway {
         .app_data(app_state_data.clone())
         .wrap(Logger::default())
         .route("/ping", web::get().to(controller::gateway::ping))
+        .route("/health", web::get().to(controller::gateway::health))
         .route("/version", web::get().to(controller::gateway::gw_version))
         .route("/mgt/login", web::post().to(controller::management::mgt_login))
         .route("/{service}/{method}", web::post().to(controller::gateway::unify))
+        .route("/{service}/{method}", web::get().to(controller::gateway::unify))
         // .service(controller::gateway::ping)
         // .service(controller::gateway::gw_version)
         // .service(controller::management::mgt_login)

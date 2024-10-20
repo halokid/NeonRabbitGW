@@ -31,6 +31,7 @@ impl Registry {
     let consul_port = config::CONFIG["consul_port"].parse().unwrap();
     let adapter = crate::registry::consul::Consul::new(consul_host, consul_port);
     let client = Box::new(adapter);
+    println!("Registry client -->>> {:?}", client);
 
     match config::CONFIG["registry_adaptee"] {
       "nacos" => {

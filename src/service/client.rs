@@ -70,7 +70,7 @@ impl Client {
   }
 
   pub async fn invoke(&mut self, service_name: String, method: String,
-                      body: serde_json::Value) -> Result<String, CustomErr> {
+                      http_method: String, body: serde_json::Value) -> Result<String, CustomErr> {
     // return self._invoke_dapr(service_name, method, body).await;
     // /*
     let run_model: Arc<RwLock<String>> = Arc::clone(&RUN_MODEL);
@@ -81,10 +81,12 @@ impl Client {
 
     // get nodes from client
     let client_nodes = Arc::clone(&self.nodes);   // client.nodes
-    let client_nodes_r = client_nodes.read().unwrap();
+    let client_nodes_ro = client_nodes.read().unwrap();
     let mut nodes = Vec::new();
-    if client_nodes_r.len() == 0 {
-      drop(client_nodes_r);
+
+    // service nodes len is 0
+    if client_nodes_ro.len() == 0 {
+      drop(client_nodes_ro);
       log::debug!("-->>> Client nodes is 0, add nodes");
 
       let registry = Registry::new();
@@ -97,22 +99,29 @@ impl Client {
         return Err(CustomErr(RSP_ERR_NO_NODES.to_string()));
       }
 
-      let mut client_nodes_w = client_nodes.write().unwrap();
-      client_nodes_w.extend(nodes.clone());
+      let mut client_nodes_rw = client_nodes.write().unwrap();
+      client_nodes_rw.extend(nodes.clone());
     }
 
     // invoke service, specify `post`
     let http_client = reqwest::Client::new();
-    // read cient nodes
-    let client_nodes_r = client_nodes.read().unwrap();
-    // let node = client_nodes_r.get(0).unwrap();
-    let node = self.selector.select_node(client_nodes_r);
+    // read cient nodes just add if nodes is 0, if that time not 0, read existing nodes in `Client`
+    let client_nodes_ro = client_nodes.read().unwrap();
+    // let node = client_nodes_ro.get(0).unwrap();
+    let node = self.selector.select_node(client_nodes_ro);
     let url = format!("http://{}/{}", node, method);
     // let url = format!("http://{}/{}", nodes[0], method);
     log::debug!("Client invoke url -->>> {:?}", url);
-    let res = http_client.post(url)
-      .json(&body)
-      .send().await.unwrap().text().await;
+
+    // let mut res: reqwest::Result<String>;
+    let mut res: reqwest::Result<String> = Ok("".to_string());
+    if http_method == "POST" {
+      res = http_client.post(url)
+        .json(&body)
+        .send().await.unwrap().text().await;
+    } else if http_method == "GET" {
+      res = http_client.get(url).send().await.unwrap().text().await;
+    }
 
     match res {
       Ok(res) => {
