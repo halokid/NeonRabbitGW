@@ -22,21 +22,21 @@ function App() {
 
   return (
     <Router>
-            <ToastContainer/>
-            {/*<Layout/>*/}
+      <ToastContainer/>
+      {/*<Layout/>*/}
 
-            <Routes>
-              <Route path="/" element={<Navigate to="/login"/>}/>
-              <Route path="/login" element={<Login/>}/>
-              {/*<Route path="/service-list" element={<ServiceList/>}/>*/}
+      <Routes>
+        <Route path="/" element={<Navigate to="/login"/>}/>
+        <Route path="/login" element={<Login/>}/>
+        {/*<Route path="/service-list" element={<ServiceList/>}/>*/}
 
-              <Route path="/service-list" element={<Layout />}>
-                <Route index element={<ServiceList />} />
-                {/* Add more routes for other pages */}
-              </Route>
+        <Route path="/service-list" element={<Layout/>}>
+        <Route index element={<ServiceList/>}/>
+        {/* Add more routes for other pages */}
+        </Route>
 
-              {/* Other routes */}
-            </Routes>
+        {/* Other routes */}
+      </Routes>
 
     </Router>
 

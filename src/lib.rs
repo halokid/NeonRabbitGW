@@ -10,6 +10,9 @@ pub mod registry;
 pub mod controller;
 pub mod vo;
 
+pub use pkg::errors;
+pub use pkg::rsp;
+
 #[derive(Debug)]
 pub struct CustomErr (pub String);
 

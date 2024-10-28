@@ -64,7 +64,7 @@ const Login = () => {
         setLoggedIn(true);
         console.log(loggedIn)
       } else {
-        toast.success('Login fail');
+        toast.error('Login fail');
       }
 
       // Proceed with login process

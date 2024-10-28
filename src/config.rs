@@ -21,7 +21,8 @@ lazy_static! {
     config.insert("log_level", "debug");
     // config.insert("log_level", "info");
     config.insert("registry_adaptee", "consul");
-    config.insert("consul_host", "127.0.0.1");
+    // config.insert("consul_host", "127.0.0.1");
+    config.insert("consul_host", "192.168.0.149");
     config.insert("consul_port", "8500");
 
     // Client selector

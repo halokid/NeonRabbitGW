@@ -23,7 +23,6 @@ unsafe impl Sync for AppState {}
 // #[derive(Debug)]
 pub struct AppState {
   // pub todo_db: Arc<Mutex<Vec<String>>>,
-
   // TODO: why here use `ReCell` for `Client`? cuz we need a mut ref in `gateway.unify` controller
   // TODO: we have a process need update the service client ref there, this scenaior need `refcell`
   // TODO: we ca use `borrow_mut()` to a `refcell` variable to update it
