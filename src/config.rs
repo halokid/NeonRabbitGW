@@ -1,7 +1,8 @@
 use lazy_static::*;
 use std::collections::HashMap;
 use std::env;
-use std::sync::{Arc, RwLock};
+use std::sync::{Arc};
+use tokio::sync::RwLock as TRwLock;
 
 lazy_static! {
   pub static ref CONFIG: HashMap<&'static str, &'static str> = {
@@ -47,5 +48,5 @@ lazy_static! {
 
 lazy_static! {
   // pub static ref  RUN_MODEL: String =  Arc::new(RwLock::new("single".to_string()));
-  pub static ref  RUN_MODEL: Arc<RwLock<String>> =  Arc::new(RwLock::new(String::from("single")));
+  pub static ref  RUN_MODEL: Arc<TRwLock<String>> =  Arc::new(TRwLock::new(String::from("single")));
 }

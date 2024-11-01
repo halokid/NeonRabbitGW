@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::fmt::{Debug, Error, Formatter};
 use std::sync::{Arc, RwLock, RwLockWriteGuard};
+use tokio::sync::RwLock as TRwLock;
 use actix_web::cookie::time::Month::March;
 use log::log;
 use tonic::codegen::ok;
@@ -73,8 +74,9 @@ impl Client {
                       http_method: String, body: serde_json::Value) -> Result<String, CustomErr> {
     // return self._invoke_dapr(service_name, method, body).await;
     // /*
-    let run_model: Arc<RwLock<String>> = Arc::clone(&RUN_MODEL);
-    let run_model_r = run_model.read().unwrap();
+    let run_model: Arc<TRwLock<String>> = Arc::clone(&RUN_MODEL);
+    // let run_model_r = run_model.read().unwrap();
+    let run_model_r = run_model.read().await;
     if *run_model_r == "dapr" {
        return self._invoke_dapr(service_name, method, body).await;
     }
