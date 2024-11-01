@@ -80,5 +80,8 @@ path = "examples/decorator/c1.rs"
 name = "decorator2"
 path = "examples/decorator/c2.rs"
 
+[[example]]
+name = "tokio_select"
+path = "examples/tokio/select.rs"
 
 
