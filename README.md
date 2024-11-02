@@ -60,7 +60,7 @@ http://localhost:8080/neon_schedule/job
 
 ```shell
 
-# Jenkis
+# Jenkis cli for delete builds version history
 java -jar jenkins-cli.jar -s http://xxxxxx:8080/ -auth xx:xxxxx  delete-builds xxxxx 0-40
 
 # Docker Registry
@@ -70,14 +70,14 @@ curl -X GET http://xxxxxxx:5000/v2/neon-rabbit-gw/tags/list
 # K8s
 kubectl create namespace neon
 
-# Running Dapr Sidecar with a Custom Configuration File
+# Running Dapr Sidecar with a Custom dapr Configuration File
 dapr run --app-id myapp --config ./path/to/your/custom-config.yaml
 
 
 ```
 
 
-# Front
+# Frontend Management
 ```shell 
 # cuz Dapr has dashboard,  has some functions can manage service, so can use to instead of this frontend
 cd neongw-frontend

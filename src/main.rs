@@ -25,8 +25,9 @@ async fn main() -> std::io::Result<()> {
     println!("run_model_rw -->>> {}", run_model_rw);
     drop(run_model_rw);
 
-    let run_model_update = Arc::clone(&RUN_MODEL);
-    println!("run_model_update -->>> {:?}", run_model_update.read().await);
+    let run_model: Arc<TRwLock<String>> = Arc::clone(&RUN_MODEL);
+    let run_model_r = run_model.read().await;
+    println!("run_model_update -->>> {:?}", run_model_r);
   }
 
   let gw = Gateway::new();
