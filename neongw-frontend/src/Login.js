@@ -62,7 +62,9 @@ const Login = () => {
         toast.success('Login successful');
         // return <Navigate to="/service-list" />;
         setLoggedIn(true);
-        console.log(loggedIn)
+        console.log(loggedIn);
+
+        localStorage.setItem('isLoggedIn', 'true');
       } else {
         toast.error('Login fail');
       }

@@ -1,11 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Drawer, List, ListItem, ListItemText, Container } from '@mui/material';
 import ServiceList from "./ServiceList";
 import {Route} from "react-router-dom";
 import { Outlet } from 'react-router-dom';
 
 const Layout = () => {
+  // log out
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    navigate('/login');
+  };
+
   return (
     <div style={{ display: 'flex' }}>
       <Drawer
@@ -25,7 +32,7 @@ const Layout = () => {
             <ListItemText primary="Services" />
           </ListItem>
 
-          <ListItem button component={Link} to="/logout">
+          <ListItem button onClick={handleLogout}>
             <ListItemText primary="Logout" />
           </ListItem>
         </List>

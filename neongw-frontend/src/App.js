@@ -3,6 +3,7 @@ import React from 'react';
 import Login from './Login';
 import ServiceList from './ServiceList';
 // import LeftMenu from "./LeftMenu";
+import PrivateRoute from "./PrivateRoute";
 import Layout from "./Layout";
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -26,21 +27,21 @@ function App() {
       {/*<Layout/>*/}
 
       <Routes>
-        <Route path="/" element={<Navigate to="/login"/>}/>
-        <Route path="/login" element={<Login/>}/>
-        {/*<Route path="/service-list" element={<ServiceList/>}/>*/}
+        {/* 默认重定向到 ServiceList（受保护）页面 */}
+        <Route path="/" element={<Navigate to="/service-list" />} />
 
-        <Route path="/service-list" element={<Layout/>}>
-        <Route index element={<ServiceList/>}/>
-        {/* Add more routes for other pages */}
+        {/* 受保护的路由 */}
+        <Route element={<PrivateRoute />}>
+          <Route element={<Layout />}>
+            <Route path="/service-list" element={<ServiceList />} />
+          </Route>
         </Route>
 
-        {/* Other routes */}
+        {/* 公共路由 */}
+        <Route path="/login" element={<Login />} />
       </Routes>
 
     </Router>
-
-
   );
 }
 
