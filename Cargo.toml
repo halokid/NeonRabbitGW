@@ -29,6 +29,9 @@ qstring = "0.7.2"
 jsonwebtoken = "7.2.0"
 futures-util = "0.3.30"
 actix-http = "3.8.0"
+aes-gcm = "0.10"   # AES-GCM 加密
+rand = "0.8"       # 生成随机密钥
+base64 = "0.21"    # Base64 编码
 
 [build-dependencies]
 tonic-build = "0.8"
